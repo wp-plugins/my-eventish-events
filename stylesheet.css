@@ -1,0 +1,219 @@
+/*
+Filename: stylesheet.css
+Description: Stylesheet for "My Eventish Events" plugin widget
+Author: Alex Vanyan
+Author Homepage: http://cs16.us
+*/
+
+/** Main box styling **/
+
+.my-eventish-events-widget {
+    background: none;
+    padding-top: 15px;
+}
+
+.my-eventish-title-box {
+    float: left;
+    width: 230px;
+}
+
+.my-eventish-title-box, 
+.my-eventish-box-middle, 
+.my-eventish-box-footer {
+    margin-left: 3px;
+}
+
+.my-eventish-events-widget .widget-title {
+    float: left;
+    width: 206px;
+    height: 23px;
+    background: url("images/middle_red.png") repeat-x;
+    padding-left: 9px;
+    padding-top: 7px;
+    text-transform: none;
+}
+
+.my-eventish-box-top-left {
+    float: left;
+    width: 7px;
+    height: 30px;
+    background: url("images/left_red.png") no-repeat;
+}
+
+.my-eventish-box-top-right {
+    float: left;
+    width: 7px;
+    height: 30px;
+    background: url("images/right_red.png") no-repeat;
+}
+
+.my-eventish-box-middle {
+    height: 89%;    
+}
+
+.my-eventish-box-middle .my-eventish-box-left {
+    float: left;
+    width: 5px;
+    height: 100%;
+    background: url("images/left.png") repeat-y;
+}
+
+.my-eventish-box-middle .my-eventish-box-content {
+    float: left;
+    height: 96%;
+    width: 229px;
+}
+
+.my-eventish-box-middle .my-eventish-box-right {
+    float: right;
+    width: 5px;
+    height: 100%;
+    background: url("images/right.png") repeat-y;
+}
+
+.my-eventish-box-footer .my-eventish-box-bottom-left {
+    float: left;
+    width: 5px;
+    height: 5px;
+    background: url("images/left_corner.png") no-repeat;
+}
+
+.my-eventish-box-footer .my-eventish-box-bottom {
+    float: left;
+    height: 5px;
+    width: 219px;
+    background: url("images/middle.png") repeat-x;
+}
+
+.my-eventish-box-footer .my-eventish-box-bottom-right {
+    float: left;
+    width: 5px;
+    height: 5px;
+    background: url("images/right_corner.png") no-repeat;
+}
+
+
+/** Event rows styling **/
+
+.my-eventish-single-event {
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 5px;
+    width: 199px;
+    height: 90px;
+    background: url("images/row_gradient.png") repeat-x;
+    background-position: 0 1px;
+}
+
+.my-eventish-event-title {
+    float: left;
+    clear: both;
+    margin-bottom: 5px;
+}
+
+.my-eventish-event-title a:link,
+.my-eventish-event-title a:active,
+.my-eventish-event-title a:visited {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: bold;
+    color: #C01418;
+}
+
+.my-eventish-event-title a:hover {
+    color: #404040;
+}
+
+.my-eventish-calendar {
+    float: left;
+    clear: left;
+    width: 30px;
+    height: 39px;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    color: #C01418;
+    background: url("images/calendar.png") no-repeat;
+}
+
+.my-eventish-event-venue {
+    float: left;
+    padding-left: 10px;
+    width: 158px;
+    height: 39px;
+    font-family: Arial;
+    font-size: 11px;
+    color: #404040;
+}
+
+.my-eventish-single-events-separator {
+    display: block;
+    margin: 1px auto;
+    width: 209px;
+    height: 1px;
+    border-bottom: 1px solid #D8D8D8;
+}
+
+.my-eventish-calendar-day {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 10px;
+    padding-top: 3px;
+    text-align: center;
+    width: 100%;
+}
+
+.my-eventish-calendar-month {
+    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.my-eventish-event-timer {
+    float: left;
+    margin-left: 4px;
+    width: 65px;
+    height: 70px;
+    padding-left: 36px;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    color: #C01418;
+    background: url("images/timer.png") no-repeat;
+}
+
+.my-eventish-starttime-title {
+    width: 100%;
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: bold;
+    color: #404040;
+}
+
+.my-eventish-starttime {
+    width: 100%;
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: bold;
+    color: #C01418;
+}
+
+.my-eventish-clear {
+    display: block;
+    clear: both;
+    width: 100%;
+}
+
+.my-eventish-events-powered-by {
+    margin-left: 75px;
+    margin-top: 20px;
+    width: 141px;
+    height: 34px;
+    background: url("images/powered_by_eventish.png") no-repeat;
+}
