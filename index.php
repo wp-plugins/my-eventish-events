@@ -3,9 +3,19 @@
 Plugin Name: My Eventish Events
 Description: Get your events from www.eventish.com
 Author: Alex Vanyan
-Version: 1.0
+Version: 1.1
 Author URI: http://cs16.us
 */
+
+if(!function_exists('get_my_eventish_name')):
+function get_my_eventish_name($args = '')
+{
+    $path = dirname(__FILE__);
+    $path = str_replace('\\', '/', $path);
+    $path = explode('/', $path);
+    return end($path);
+}
+endif;
 
 if(!function_exists('my_eventish_events')):
 function my_eventish_events($args = '')
@@ -27,15 +37,17 @@ endif;
 
 if(!function_exists('my_eventish_css')):
 function my_eventish_css() {
-    wp_enqueue_style('myeventish-front-css', WP_PLUGIN_URL . '/myeventishevents/stylesheet.css');
+    wp_enqueue_style('myeventish-front-css', WP_PLUGIN_URL . '/' . get_my_eventish_name() . '/stylesheet.css');
 }
 add_action('wp_print_styles', 'my_eventish_css');
 endif;
 
 if(!function_exists('my_eventish_events_widget')):
 function my_eventish_events_widget() {
-    $apiKey = get_option('eventish_api_key');
-    $limit = (int) get_option('eventish_events_limit');
+    $opts = get_option('my_eventish_opts');
+    $title = $opts['title'] ? $opts['title'] : "Upcoming Events";
+    $apiKey = $opts['api_key'] ? $opts['api_key'] : "";
+    $limit = (int) $opts['limit'] ? (int) $opts['limit'] : 0;
     
     if(!$apiKey) {
         echo "No API key is configured. Please proceed to admin panel widgets to enter a valid API key.";
@@ -47,15 +59,11 @@ function my_eventish_events_widget() {
             show_my_eventish_errors($my_events["ERROR"]);
             echo "</div>";
         } else {
-            /*
-            echo "<pre>";
-            var_dump($my_events); exit;
-            */
         	echo <<<HTML
             <li class="widget-container my-eventish-events-widget">
                 <div class="my-eventish-title-box">
                     <div class="my-eventish-box-top-left"></div>
-                    <h3 class="widget-title">Upcoming Events</h3>
+                    <span class="widget-title">$title</span>
                     <div class="my-eventish-box-top-right"></div>
                 </div>
                 <div class="widget-content">
@@ -77,7 +85,7 @@ HTML;
                 echo "
                             <div class=\"my-eventish-single-event\">
                                 <div class=\"my-eventish-event-title\">
-                                    <a target=\"_blank\" href=\"http://www.eventish.com/events/show/{$event['ID']}\">{$event['EventName']}</a>
+                                    <a class=\"my-eventish-event-title-link\" target=\"_blank\" href=\"http://www.eventish.com/events/show/{$event['ID']}\">{$event['EventName']}</a>
                                 </div>
                                 <div class=\"my-eventish-calendar\">
                                     <span class=\"my-eventish-calendar-day\">
@@ -134,34 +142,35 @@ if(!function_exists('my_eventish_events_init')):
 function my_eventish_events_init() {
     
     $fields = array(
-                    'api_key' => 'eventish_api_key',
-                    'limit' => 'eventish_events_limit' 
+                    'api_key' => 'api_key',
+                    'limit'   => 'events_limit',
+                    'title'   => 'title'
                     );
-        
+    
     if($_POST) {
+        $save_opts = array();
+        
         foreach($fields as $fkey => $field) {
-            if($posted = ltrim(rtrim($_POST[$fkey]))) {
-                if(get_option($field)) {
-                    update_option($field, $posted);
-                } else {
-                    add_option($field, $posted, null, 'yes');
-                }
-            } else {
-                delete_option($field);
-            }
+            $save_opts[$fkey] = $_POST[$field];
+        }
+        
+        if(get_option('my_eventish_opts')) {
+            update_option('my_eventish_opts', $save_opts);
+        } else {
+            add_option('my_eventish_opts', $save_opts, null, 'yes');
         }
     }
     
-    foreach($fields as $fkey => $field) {
-        $$fkey = get_option($field, "");
-    }
+    $opts = get_option('my_eventish_opts', array());
     
-    echo "API Key: <input type=\"text\" name=\"api_key\" value=\"$api_key\" /><br /><br />";
+    echo "Title: <input type=\"text\" name=\"title\" value=\"{$opts['title']}\" /><br /><br />";
     
-    if(!$api_key) {
+    echo "API Key: <input type=\"text\" name=\"api_key\" value=\"{$opts['api_key']}\" /><br /><br />";
+    
+    if(!$opts['api_key']) {
         echo "Please enter an API key...<br /><br />";
     } else {
-        $my_events = my_eventish_curl_download("http://www.eventish.com/api/events/my?apikey=" . $api_key . "&startnum=0&limit=" . $limit);
+        $my_events = my_eventish_curl_download("http://www.eventish.com/api/events/my?apikey=" . $opts['api_key'] . "&startnum=0&limit=" . $opts['limit']);
         $my_events = json_decode($my_events, 1);
         if(array_key_exists("ERROR", $my_events)) {
             show_my_eventish_errors($my_events["ERROR"]);
@@ -169,7 +178,7 @@ function my_eventish_events_init() {
         }
     }
     
-    echo "Events Limit: <input type=\"text\" name=\"limit\" value=\"$limit\" size=\"1\" /><br /><br />";
+    echo "Events Limit: <input type=\"text\" name=\"events_limit\" value=\"{$opts['limit']}\" size=\"1\" /><br /><br />";
 }
 register_widget_control('My Eventish Events', 'my_eventish_events_init');
 endif;
